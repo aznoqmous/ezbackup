@@ -1,10 +1,10 @@
 #!/bin/bash
 script_path=$(echo $0 | sed 's:/ezbackup.sh::g')
-alias ezexport="sh '$script_path/ezexport.sh'"
-alias ezimport="sh '$script_path/ezimport.sh'"
+# alias ezexport="sh '$script_path/ezexport.sh'"
+# alias ezimport="sh '$script_path/ezimport.sh'"
+source "$script_path/.bash_aliases"
 
-
-function usage(){
+function usage (){
   echo "Usage:"
   echo "ezbackup list       List available exports"
   echo "ezbackup export     Create a new backup"

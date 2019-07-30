@@ -4,12 +4,12 @@ destination_dir=$2
 destination_db=$3
 root_folder="/var/lib/ezbackup"
 
-function usage(){
+function usage (){
   echo 'ezbackup import <backup_name> <destination_folder> (destination_db)'
   echo 'ezbackup import list : list available exports'
 }
 
-function list_backups(){
+function list_backups (){
   backups=$(ls -1 "$root_folder")
   for backup in $backups; do
     savefile="$root_folder/$backup/save.tar.gz"
@@ -36,7 +36,6 @@ else
   fi
 fi
 
-
 source_dir="$root_folder/$name"
 
 if [[ -z $destination_dir ]]
@@ -47,6 +46,7 @@ fi
 mkdir -p $destination_dir
 echo "Backup $name from $source_dir"
 
+# FILES
 echo "Uncompressing archive"
 source_size=$(du -bc --exclude="cache" --exclude="vendor" --exclude="node_modules" $source_dir | tail -n1 | sed 's/total//g' | sed 's/ //g')
 progress_bar=$(($source_size/10000000*2+1))
@@ -59,6 +59,7 @@ printf '['
 tar -zxf "$source_dir/save.tar.gz" -C "$destination_dir/" --checkpoint=.1000
 echo -e "\nArchive uncompressed."
 
+# DATABASE
 if [[ -z $destination_db ]]
 then
   echo 'No database selected for importation.'
