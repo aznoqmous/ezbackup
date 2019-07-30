@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/usr/bin/env bash
 name=$1
 source_dir=$2
 source_db=$3
@@ -6,10 +6,10 @@ root_folder="/var/lib/ezbackup"
 
 echo ""
 
-function usage (){
+function usage(){
   echo 'ezbackup export <backup_name> <source_folder> (source_db)'
 }
-function disclaimer (){
+function disclaimer(){
   echo 'NOTE: ezbackup default exclude so-called "node_modules", "vendor" and "cache" directories'
 }
 

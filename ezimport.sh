@@ -1,15 +1,15 @@
-#!/bin/bash
+ #!/usr/bin/env bash
 name=$1
 destination_dir=$2
 destination_db=$3
 root_folder="/var/lib/ezbackup"
 
-function usage (){
+function usage(){
   echo 'ezbackup import <backup_name> <destination_folder> (destination_db)'
   echo 'ezbackup import list : list available exports'
 }
 
-function list_backups (){
+function list_backups(){
   backups=$(ls -1 "$root_folder")
   for backup in $backups; do
     savefile="$root_folder/$backup/save.tar.gz"

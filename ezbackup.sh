@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/usr/bin/env bash
 script_path=$(echo $0 | sed 's:/ezbackup.sh::g')
 # alias ezexport="sh '$script_path/ezexport.sh'"
 # alias ezimport="sh '$script_path/ezimport.sh'"
