@@ -66,7 +66,7 @@ else
 fi
 
 echo "Backup done."
-echo "Your backup $name is located at $destination"
-echo "To import this backup, use : ezbackup import $name <destination folder> (destination_db)"
+echo "The [$name] backup is located at $destination"
+echo "To import this backup : ezbackup import $name <destination folder> (destination_db)"
 
 echo ""
