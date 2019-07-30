@@ -1,3 +1,4 @@
+#!/bin/bash
 name=$1
 destination_dir=$2
 destination_db=$3
@@ -46,9 +47,17 @@ fi
 mkdir -p $destination_dir
 echo "Backup $name from $source_dir"
 
-echo "Uncompressing archive..."
+echo "Uncompressing archive"
+source_size=$(du -bc --exclude="cache" --exclude="vendor" --exclude="node_modules" $source_dir | tail -n1 | sed 's/total//g' | sed 's/ //g')
+progress_bar=$(($source_size/10000000*2+1))
+printf '['
+for (( i=0; i<$progress_bar; i++ )); do
+  printf " "
+done
+printf "]\r"
+printf '['
 tar -zxf "$source_dir/save.tar.gz" -C "$destination_dir/" --checkpoint=.1000
-echo "Archive uncompressed."
+echo -e "\nArchive uncompressed."
 
 if [[ -z $destination_db ]]
 then
