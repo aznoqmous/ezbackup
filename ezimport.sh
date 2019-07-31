@@ -53,7 +53,7 @@ ezimport(){
   # FILES
   echo "Uncompressing archive"
   source_size=$(du -bc --exclude="cache" --exclude="vendor" --exclude="node_modules" $source_dir | tail -n1 | sed 's/total//g' | sed 's/ //g')
-  progress_bar=$(($source_size/10000000))
+  progress_bar=$(($source_size/10000000+1))
   printf '['
   for (( i=0; i<$progress_bar; i++ )); do
     printf " "
