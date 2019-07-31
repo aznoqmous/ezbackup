@@ -1,3 +1,3 @@
 alias ezbackup="sh ezbackup.sh"
-alias ezexport="sh ezexport.sh"
-alias ezimport="sh ezimport.sh"
+alias ezexport="source ezexport.sh; ezexport"
+alias ezimport="source ezimport.sh; ezimport"

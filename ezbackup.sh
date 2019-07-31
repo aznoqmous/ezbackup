@@ -1,14 +1,32 @@
- #!/usr/bin/env bash
-script_path=$(echo $0 | sed 's:/ezbackup.sh::g')
-# alias ezexport="sh '$script_path/ezexport.sh'"
-# alias ezimport="sh '$script_path/ezimport.sh'"
-source "$script_path/.bash_aliases"
+ #!/bin/bash
+SRC=${0%/*}
+root_folder="/var/lib/ezbackup"
 
-function usage (){
+source "${SRC}/ezexport.sh"
+source "${SRC}/ezimport.sh"
+source "${SRC}/echolor.sh"
+
+usage () {
   echo "Usage:"
   echo "ezbackup list       List available exports"
   echo "ezbackup export     Create a new backup"
   echo "ezbackup import     Import a previously created backup"
+}
+
+delete () {
+  name=$1
+  if [[ -z $name ]]; then
+    ezimport list
+    exit
+  fi
+  if [[ -d "$root_folder/$1" ]]
+    then
+      echolor warn "{Deleting} $root_folder/$1 \n"
+      rm -rf "$root_folder/$1"
+      echo "Done"
+    else
+      echolor green "No backup {$name} where found"
+  fi
 }
 
 if [[ -z $1 ]]; then
@@ -23,5 +41,8 @@ else
   fi
   if [[ $1 == 'import' ]]; then
     ezimport $2 $3 $4
+  fi
+  if [[ $1 == 'delete' ]]; then
+    delete $2
   fi
 fi
