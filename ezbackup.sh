@@ -6,6 +6,14 @@ source "${SRC}/ezexport.sh"
 source "${SRC}/ezimport.sh"
 source "${SRC}/echolor.sh"
 
+disclaimer(){
+  echolor orange '{ __________________________________________________________________________________________________}\n'
+  echolor orange '{|}                                                                                                  {|}\n'
+  echolor orange '{| NOTE: } ezbackup default exclude so-called {"node_modules"}, {"vendor"} and {"cache"} directories       {|}\n'
+  echolor orange '{|__________________________________________________________________________________________________|}\n'
+  echo ""
+}
+
 usage () {
   echo "Usage:"
   echolor green "{ezbackup} list       List available exports\n"
@@ -37,10 +45,12 @@ else
     ezimport list
   fi
   if [[ $1 == 'export' ]]; then
+    disclaimer
     ezexport $2 $3 $4
   fi
   if [[ $1 == 'import' ]]; then
     ezimport $2 $3 $4
+    disclaimer
   fi
   if [[ $1 == 'delete' ]]; then
     delete $2

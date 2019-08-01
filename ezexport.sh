@@ -6,17 +6,12 @@ usage(){
   echo 'ezbackup export <backup_name> <source_folder> (source_db)'
 }
 
-disclaimer(){
-  echolor orange '\n{| NOTE:} ezbackup default exclude so-called {"node_modules"}, {"vendor"} and {"cache"} directories {|}\n\n'
-}
-
 ezexport(){
   name=$1
   source_dir=$2
   source_db=$3
   root_folder="/var/lib/ezbackup"
   # echo ""
-  disclaimer
   if [[ $name == '--help' ]]; then
     usage
     exit
@@ -77,6 +72,12 @@ ezexport(){
   fi
 
   echo "Backup done."
+
+  infos="$destination/infos.log"
+  echo "name: $name" > "$infos"
+  echo "source_dir: $source_dir" >> "$infos"
+  echo "source_db: $source_db" >> "$infos"
+
   echolor green "{The} $name {backup is located at} $destination\n"
   echolor green "{To import this backup :} ezbackup import "
   echolor orange "{$name} <destination folder> (destination_db)\n"
