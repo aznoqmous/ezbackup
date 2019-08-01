@@ -8,9 +8,9 @@ source "${SRC}/echolor.sh"
 
 usage () {
   echo "Usage:"
-  echo "ezbackup list       List available exports"
-  echo "ezbackup export     Create a new backup"
-  echo "ezbackup import     Import a previously created backup"
+  echolor green "{ezbackup} list       List available exports\n"
+  echolor green "{ezbackup} export     Create a new backup\n"
+  echolor green "{ezbackup} import     Import a previously created backup\n"
 }
 
 delete () {
@@ -25,7 +25,7 @@ delete () {
       rm -rf "$root_folder/$1"
       echo "Done"
     else
-      echolor green "No backup {$name} where found"
+      echolor green "No backup {$name} where found\n"
   fi
 }
 

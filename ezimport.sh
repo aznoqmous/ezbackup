@@ -12,12 +12,12 @@ list_backups(){
   for backup in $backups; do
     savefile="$root_folder/$backup/save.tar.gz"
     dbfile="$root_folder/$backup/database.sql.gz"
-    echolor bgorange "\n$backup\n"
+    echolor bggreen "\n $backup \n"
     if [[ -f $savefile ]]; then
-      echolor orange "{[FILES]} $(du -ha $savefile)\n"
+      echolor green "{[FILES]}    $(du -ha $savefile)\n"
     fi
     if [[ -f $dbfile ]]; then
-      echolor orange "{[DATABASE]} $(du -ha $dbfile)\n"
+      echolor green "{[DATABASE]} $(du -ha $dbfile)\n"
     fi
   done
   echo ""
@@ -44,24 +44,31 @@ ezimport(){
 
   if [[ -z $destination_dir ]]
   then
-    read -p "Destination folder path : " destination_dir
+    echolor green "Destination folder path: "
+    read destination_dir
   fi
 
   mkdir -p $destination_dir
-  echo "Backup $name from $source_dir"
+  echolor green "{Exporting backup} $name {from} $source_dir {to} $destination_dir\n"
 
   # FILES
-  echo "Uncompressing archive"
-  source_size=$(du -bc --exclude="cache" --exclude="vendor" --exclude="node_modules" $source_dir | tail -n1 | sed 's/total//g' | sed 's/ //g')
-  progress_bar=$(($source_size/10000000+1))
-  printf '['
-  for (( i=0; i<$progress_bar; i++ )); do
-    printf " "
+  source_size=$(zcat "$source_dir/save.tar.gz" | wc --bytes)
+  echo "Uncompressing archive..."
+  progress_bar=50
+  checkpoint=$(($source_size/10000/$progress_bar))
+  for (( i=0; i<$(($progress_bar-1)); i++ )); do
+    printf "░"
   done
-  printf "]\r"
-  printf '['
-  tar -zxf "$source_dir/save.tar.gz" -C "$destination_dir/" --checkpoint=.1000
-  echo -e "\nArchive uncompressed."
+  printf "\r"
+
+  tar -zxf "$source_dir/save.tar.gz" -C "$destination_dir/" --record-size=10K --checkpoint=$checkpoint --checkpoint-action="ttyout=█"
+
+  printf "\r"
+  for (( i=0; i<$(($progress_bar-1)); i++ )); do
+    printf "  "
+  done
+  printf "\r"
+  echo "Archive uncompressed."
 
   # DATABASE
   if [[ -z $destination_db ]]
