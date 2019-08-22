@@ -9,18 +9,20 @@ usage(){
 
 list_backups(){
   backups=$(ls -1 "$root_folder")
+  echo ""
   for backup in $backups; do
     savefile="$root_folder/$backup/save.tar.gz"
     dbfile="$root_folder/$backup/database.sql.gz"
-    echolor bggreen "\n $backup \n"
+    echolor green "[$backup]\n"
     if [[ -f $savefile ]]; then
-      echolor green "{[FILES]}    $(du -ha $savefile)\n"
+      echolor orange "{(FILES} $(du -ha $savefile | cut -f1){)}  "
     fi
     if [[ -f $dbfile ]]; then
-      echolor green "{[DATABASE]} $(du -ha $dbfile)\n"
+      echolor orange "{(DATABASE} $(du -ha $dbfile | cut -f1){)} "
     fi
+    echo ""
+    echo ""
   done
-  echo ""
 }
 
 ezimport(){
@@ -31,7 +33,8 @@ ezimport(){
 
   if [[ -z $name ]]
   then
-    read -p "Chose a backup from the list bellow : $(list_backups) `echo $'\n> '`" name
+    echolor orange "Chose a backup from the list bellow :"
+    read -p "$(list_backups) `echo $'\n> '`" name
   else
     if [[ $name == "list" ]]; then
       echo "Available exports ($root_folder):"
@@ -44,16 +47,16 @@ ezimport(){
 
   if [[ -z $destination_dir ]]
   then
-    echolor green "Destination folder path: "
+    echolor orange "Destination folder path: "
     read destination_dir
   fi
 
   mkdir -p $destination_dir
-  echolor green "{Exporting backup} $name {from} $source_dir {to} $destination_dir\n"
+  echolor orange "{Exporting backup} $name {from} $source_dir {to} $destination_dir\n"
 
   # FILES
   source_size=$(zcat "$source_dir/save.tar.gz" | wc --bytes)
-  echo "Uncompressing archive..."
+  echolor orange "{Uncompressing} $name {archive...}\n"
   progress_bar=50
   checkpoint=$(($source_size/10000/$progress_bar))
   for (( i=0; i<$(($progress_bar-1)); i++ )); do
@@ -68,28 +71,37 @@ ezimport(){
     printf "  "
   done
   printf "\r"
-  echo "Archive uncompressed."
+  echolor green "Archive uncompressed.\n"
 
   # DATABASE
-  if [[ -z $destination_db ]]
+  if [[ -f "$source_dir/database.sql.gz" ]]
   then
-    echo 'No database selected for importation.'
-    echo '' > /dev/null
-  else
-    if [[ -f "$source_dir/database.sql.gz" ]]
+    if [[ -z $destination_db ]]
     then
-      echo "Importing Database..."
+      echo 'No database selected for importation.'
+      echolor orange "{Enter a} database name {or leave blank to skip database import:} "
+      read -p "" destination_db
+    fi
+    if [[ -z $destination_db ]]
+    then
+      echo "" > /dev/null
+    else
+      echolor orange "{Importing database to} $destination_db{...}\n"
       read -s -p "MYSQL Password:" mysql_pwd
       echo ""
       mysql -u root -p$mysql_pwd -e "CREATE DATABASE IF NOT EXISTS $destination_db"
       gunzip < "$source_dir/database.sql.gz" | mysql -u root -p$mysql_pwd $destination_db
-      echo "Database import done."
-    else
-      echo "No database save can be found in backup folder $name"
+      echolor green "Database import done.\n"
     fi
+  else
+    echolor orange "{No database found in} $name {backup}\n"
   fi
 
   echo ""
   echo "Import done."
+  echolor orange "{Destination folder:} $destination_dir\n"
+  if [[ -z $destination_db ]]
+    then echolor orange "{Destination database:} $destination_db\n"
+  fi
 
 }

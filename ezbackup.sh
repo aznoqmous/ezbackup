@@ -15,22 +15,31 @@ disclaimer(){
 }
 
 usage () {
-  echo "Usage:"
-  echolor green "{ezbackup} list       List available exports\n"
-  echolor green "{ezbackup} export     Create a new backup\n"
-  echolor green "{ezbackup} import     Import a previously created backup\n"
+  echolor orange "Usage:\n"
+  echolor green "{ezbackup}"
+  echolor orange " {export}     Create a new backup\n"
+  echolor green "{ezbackup} "
+  echolor orange "{import}     Import a previously created backup\n"
+  echolor green "{ezbackup} "
+  echolor orange "{list}       List available exports\n"
+  echolor green "{ezbackup} "
+  echolor orange "{delete}     Delete a previously created backup\n"
 }
 
 delete () {
   name=$1
-  if [[ -z $name ]]; then
-    ezimport list
-    exit
+  if [[ -z $name ]]
+  then
+    read -p "Chose a backup to delete : $(list_backups) `echo $'\n> '`" name
   fi
-  if [[ -d "$root_folder/$1" ]]
+  if [[ -z $name ]]
+  then
+    echo "No backup selected."
+  fi
+  if [[ -d "$root_folder/$name" ]]
     then
-      echolor warn "{Deleting} $root_folder/$1 \n"
-      rm -rf "$root_folder/$1"
+      echolor warn "{Deleting} $root_folder/$name \n"
+      rm -rf "$root_folder/$name"
       echo "Done"
     else
       echolor green "No backup {$name} where found\n"

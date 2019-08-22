@@ -36,11 +36,11 @@ ezexport(){
   fi
 
   mkdir -p $destination
-  echolor green "{Creating backup} $name {from} $source_dir {to} $destination\n"
+  echolor orange "{Creating backup} $name {from} $source_dir {to} $destination\n"
 
   # FILES
   source_size=$(du -bc --exclude="cache" --exclude="vendor" --exclude="node_modules" $source_dir | tail -n1 | sed 's/total//g' | sed 's/ //g')
-  echolor green "Compressing files\n"
+  echolor orange "Compressing files\n"
   progress_bar=50
   checkpoint=$(($source_size/10000/$progress_bar))
   for (( i=0; i<$progress_bar; i++ )); do
@@ -59,7 +59,7 @@ ezexport(){
 
   # DATABASE
   if [[ -z $source_db ]]; then
-    echolor green "{Chose a} database {or leave blank} : "
+    echolor orange "{Chose a} database {or leave blank} : "
     read source_db
   fi
   if [[ -z $source_db ]]
