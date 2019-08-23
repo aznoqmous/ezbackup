@@ -50,12 +50,27 @@ ezimport(){
     echolor orange "Destination folder path: "
     read destination_dir
   fi
+  if [[ -d $destination_dir ]]
+  then
+    echolor orange "{Destination directory} $destination_dir {is not empty.}\n"
+    echolor orange "{Would you like to empty} $destination_dir {? (y/n)}"
+    read -p "" empty_dir
+    if [[ $empty_dir != 'n' ]]
+    then
+      destination_folders="$destination_dir/*"
+      rm -rf $destination_folders
+      echolor green "{Destination directory} $destination_dir {has been cleared.}\n"
+      ls $destination_dir
+    fi
+  fi
 
   mkdir -p $destination_dir
   echolor orange "{Exporting backup} $name {from} $source_dir {to} $destination_dir\n"
 
   # FILES
+  echolor orange "Calculating...\r"
   source_size=$(zcat "$source_dir/save.tar.gz" | wc --bytes)
+  printf "              \r"
   echolor orange "{Uncompressing} $name {archive...}\n"
   progress_bar=50
   checkpoint=$(($source_size/10000/$progress_bar))
@@ -74,17 +89,18 @@ ezimport(){
   echolor green "Archive uncompressed.\n"
 
   # DATABASE
+  echo ""
   if [[ -f "$source_dir/database.sql.gz" ]]
   then
     if [[ -z $destination_db ]]
     then
-      echo 'No database selected for importation.'
+      echolor orange 'No database selected for importation.\n'
       echolor orange "{Enter a} database name {or leave blank to skip database import:} "
       read -p "" destination_db
     fi
     if [[ -z $destination_db ]]
     then
-      echo "" > /dev/null
+      echo "Database import skipped."
     else
       echolor orange "{Importing database to} $destination_db{...}\n"
       read -s -p "MYSQL Password:" mysql_pwd
@@ -100,8 +116,9 @@ ezimport(){
   echo ""
   echo "Import done."
   echolor orange "{Destination folder:} $destination_dir\n"
-  if [[ -z $destination_db ]]
-    then echolor orange "{Destination database:} $destination_db\n"
+  if [[ -z $destination_db ]]; then echo "" > /dev/null
+  else
+    echolor orange "{Destination database:} $destination_db\n"
   fi
 
 }
