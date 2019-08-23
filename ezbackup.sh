@@ -1,10 +1,12 @@
  #!/bin/bash
 SRC=${0%/*}
-root_folder="/var/lib/ezbackup"
 
 source "${SRC}/ezexport.sh"
 source "${SRC}/ezimport.sh"
 source "${SRC}/echolor.sh"
+source "${SRC}/getconf.sh"
+
+root_folder=$(getconf "${SRC}/ezbackup.conf" "root_folder")
 
 usage () {
   echolor orange "Usage:\n"
@@ -18,6 +20,7 @@ usage () {
   echolor orange "{delete}     Delete a previously created backup\n"
   echolor green "{ezbackup} "
   echolor orange "{infos}      Get infos about a backup\n"
+  echolor orange "{backup folder:} $root_folder"
 }
 
 delete () {

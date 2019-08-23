@@ -1,6 +1,7 @@
 #!/bin/bash
 SRC=${0%/*}
 source "${SRC}/echolor.sh"
+source "${SRC}/getconf.sh"
 
 usage(){
   echo 'ezbackup export <backup_name> <source_folder> (source_db)'
@@ -25,8 +26,9 @@ ezexport(){
   name=$1
   source_dir=$2
   source_db=$3
-  root_folder="/var/lib/ezbackup"
+  root_folder=$(getconf "${SRC}/ezbackup.conf" "root_folder")
 
+  exit
   # echo ""
   if [[ $name == '--help' ]]; then
     usage
