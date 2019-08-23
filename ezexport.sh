@@ -11,7 +11,7 @@ get_excludes(){
   excludes=$1
   if [[ -z $excludes ]]
   then
-    excludes='cache,vendor,node_modules'
+    excludes=$(getconf "${SRC}/ezbackup.conf" "default_excludes")
   fi
   excludes=$(echo "$excludes" | tr ',' '\n')
   excludes_options=()
@@ -86,6 +86,7 @@ ezexport(){
   echolor orange "{Creating backup} $name {from} $source_dir {to} $destination\n"
 
   # FILES
+  excludes=$(getconf "${SRC}/ezbackup.conf" "default_excludes")
   echolor orange "{Enter comma separated} folders/files patterns to exclude {(default to 'cache,vendor,node_modules')} :\n"
   read -p '' excludes
   excludes_options=$(get_excludes $excludes)
@@ -109,7 +110,7 @@ ezexport(){
 
   # DATABASE
   if [[ -z $source_db ]]; then
-    echolor orange "{Chose a} database {or leave blank} : "
+    echolor orange "{Chose a} database {or leave blank:}"
     read source_db
   fi
   if [[ -z $source_db ]]
@@ -131,8 +132,8 @@ ezexport(){
   echo "source_size: $source_size" >> "$infos"
 
   echolor green "{The} $name {backup is located at} $destination\n"
-  echolor green "{To import this backup :} ezbackup import "
-  echolor orange "{$name} <destination folder> (destination_db)\n"
+  echolor green "To import this backup:\"
+  echolor orange "ezbackup import {$name} <destination folder> (destination_db)\n"
 
   echo ""
 
