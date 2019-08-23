@@ -28,8 +28,6 @@ ezexport(){
   source_db=$3
   root_folder=$(getconf "${SRC}/ezbackup.conf" "root_folder")
 
-  exit
-  # echo ""
   if [[ $name == '--help' ]]; then
     usage
     exit
