@@ -20,7 +20,7 @@ usage () {
   echolor orange "{delete}     Delete a previously created backup\n"
   echolor green "{ezbackup} "
   echolor orange "{infos}      Get infos about a backup\n"
-  echolor orange "{backup folder:} $root_folder"
+  echolor orange "{backup folder:} $root_folder\n"
 }
 
 delete () {
