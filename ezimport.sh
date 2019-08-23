@@ -103,9 +103,9 @@ ezimport(){
     then
       echo "Database import skipped."
     else
-      echolor orange "{Importing database to} $destination_db{...}\n"
       read -s -p "MYSQL Password:" mysql_pwd
       echo ""
+      echolor orange "{Importing database to} $destination_db{...}\n"
       mysql -u root -p$mysql_pwd -e "CREATE DATABASE IF NOT EXISTS $destination_db"
       gunzip < "$source_dir/database.sql.gz" | mysql -u root -p$mysql_pwd $destination_db
       echolor green "Database import done.\n"
