@@ -27,6 +27,7 @@ ezexport(){
   source_dir=$2
   source_db=$3
   root_folder=$(getconf "${SRC}/ezbackup.conf" "root_folder")
+  mkdir -p $root_folder
 
   if [[ $name == '--help' ]]; then
     usage
