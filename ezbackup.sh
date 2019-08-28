@@ -64,6 +64,8 @@ infos(){
   cat "$root_folder/$name/infos.log"
 }
 
+init
+
 if [[ -z $1 ]]; then
   usage
   exit
