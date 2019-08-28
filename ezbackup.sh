@@ -6,7 +6,18 @@ source "${SRC}/ezimport.sh"
 source "${SRC}/echolor.sh"
 source "${SRC}/getconf.sh"
 
-root_folder=$(getconf "${SRC}/ezbackup.conf" "root_folder")
+conf_file="${SRC}/ezbackup.conf"
+
+init(){
+  if [[-f $conf_file ]]
+  then
+    echo "" > /dev/null
+    root_folder=$(getconf "${SRC}/ezbackup.conf" "root_folder")
+  else
+    printf "" > $conf_file
+    root_folder="/var/lib/ezbackup"
+  fi
+}
 
 usage () {
   echolor orange "Usage:\n"
