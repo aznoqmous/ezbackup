@@ -20,7 +20,9 @@ usage () {
   echolor orange "{delete}     Delete a previously created backup\n"
   echolor green "{ezbackup} "
   echolor orange "{infos}      Get infos about a backup\n"
-  echolor orange "{backup folder:} $root_folder\n"
+  backup_folder_size=$(du -hs "$source" | cut -f1)
+  disk_space_left=$(df -h --output="avail" "$root_folder" | tail -n1)
+  echolor orange "{backup folder:} $root_folder ($backup_folder_size / $disk_space_left left) \n"
 }
 
 delete () {
