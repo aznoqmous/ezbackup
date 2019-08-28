@@ -17,6 +17,7 @@ init(){
     printf "" > $conf_file
     root_folder="/var/lib/ezbackup"
   fi
+  mkdir -p "$root_folder"
 }
 
 usage () {
