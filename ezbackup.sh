@@ -9,7 +9,7 @@ source "${SRC}/getconf.sh"
 conf_file="${SRC}/ezbackup.conf"
 
 init(){
-  if [[-f $conf_file ]]
+  if [[ -f $conf_file ]]
   then
     echo "" > /dev/null
     root_folder=$(getconf "${SRC}/ezbackup.conf" "root_folder")
