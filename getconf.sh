@@ -1,6 +1,5 @@
 #!/bin/bash
 getconf(){
-
   file=$1
   key=$2
   if [[ -z $file || -z $key ]]
@@ -15,5 +14,4 @@ getconf(){
       echo "$file is not a valid file"
     fi
   fi
-
 }

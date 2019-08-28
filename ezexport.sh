@@ -132,11 +132,9 @@ ezexport(){
   echo "source_size: $source_size" >> "$infos"
 
   echolor green "{The} $name {backup is located at} $destination\n"
-  echolor green "To import this backup:\"
+  echolor green "To import this backup:\n"
   echolor orange "ezbackup import {$name} <destination folder> (destination_db)\n"
 
   echo ""
 
 }
-
-# ezexport "$@"
