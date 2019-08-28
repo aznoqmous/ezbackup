@@ -21,7 +21,7 @@ usage () {
   echolor green "{ezbackup} "
   echolor orange "{infos}      Get infos about a backup\n"
   backup_folder_size=$(du -hs "$root_folder" | cut -f1)
-  disk_space_left=$(df -h --output="avail" "$root_folder" | tail -n1)
+  disk_space_left=$(df -h --output="avail" "$root_folder" | tail -n1 | sed 's/ //g')
   echolor orange "{backup folder:} $root_folder ($backup_folder_size / $disk_space_left left) \n"
 }
 
