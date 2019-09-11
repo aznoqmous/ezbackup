@@ -6,7 +6,8 @@ source "${SRC}/ezimport.sh"
 source "${SRC}/echolor.sh"
 source "${SRC}/getconf.sh"
 
-conf_file="${SRC}/ezbackup.conf"
+mkdir -p "/etc/ezbackup"
+conf_file="/etc/ezbackup/ezbackup.conf"
 
 init(){
   if [[ -f $conf_file ]]
@@ -35,6 +36,7 @@ usage () {
   backup_folder_size=$(du -hs "$root_folder" | cut -f1)
   disk_space_left=$(df -h --output="avail" "$root_folder" | tail -n1 | sed 's/ //g')
   echolor orange "{backup folder:} $root_folder ($backup_folder_size / $disk_space_left left) \n"
+  echolor orange "{conf file:}     $conf_file \n"
 }
 
 delete () {
@@ -56,7 +58,7 @@ delete () {
       echolor green "No backup {$name} where found\n"
   fi
 }
-infos(){
+get_infos(){
   name=$1
   if [[ -z $name ]]
   then
@@ -84,6 +86,6 @@ else
     delete $2
   fi
   if [[ $1 == 'infos' ]]; then
-    infos $2
+    get_infos $2
   fi
 fi
