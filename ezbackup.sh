@@ -67,6 +67,13 @@ get_infos(){
   cat "$root_folder/$name/infos.log"
 }
 
+update(){
+  read -p "Do you want to update $SRC ?" update_yes
+  cd $SRC
+  git fetch
+  git pull
+}
+
 init
 
 if [[ -z $1 ]]; then
@@ -87,5 +94,8 @@ else
   fi
   if [[ $1 == 'infos' ]]; then
     get_infos $2
+  fi
+  if [[ $1 == 'update' ]]; then
+    update
   fi
 fi
