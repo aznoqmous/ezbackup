@@ -68,8 +68,7 @@ get_infos(){
 }
 
 update(){
-  read -p "Do you want to update $SRC ?" update_yes
-  cd $SRC
+  cd "$SRC"
   git fetch
   git pull
 }
