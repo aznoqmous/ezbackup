@@ -13,11 +13,10 @@ init(){
   if [[ -f $conf_file ]]
   then
     echo "" > /dev/null
-    root_folder=$(getconf "${SRC}/ezbackup.conf" "root_folder")
   else
-    printf "" > $conf_file
-    root_folder="/var/lib/ezbackup"
+    cat "${SRC}/ezbackup.conf" > $conf_file
   fi
+  root_folder=$(getconf "$conf_file" "root_folder")
   mkdir -p "$root_folder"
 }
 
