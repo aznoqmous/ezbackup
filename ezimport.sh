@@ -3,6 +3,8 @@ SRC=${0%/*}
 source "${SRC}/echolor.sh"
 source "${SRC}/getconf.sh"
 
+conf_file="/etc/ezbackup/ezbackup.conf"
+
 usage(){
   echo 'ezbackup import <backup_name> <destination_folder> (destination_db)'
   echo 'ezbackup import list : list available exports'
@@ -30,7 +32,7 @@ ezimport(){
   name=$1
   destination_dir=$2
   destination_db=$3
-  root_folder=$(getconf "${SRC}/ezbackup.conf" "root_folder")
+  root_folder=$(getconf "$conf_file" "root_folder")
 
   if [[ -z $name ]]
   then

@@ -3,6 +3,8 @@ SRC=${0%/*}
 source "${SRC}/echolor.sh"
 source "${SRC}/getconf.sh"
 
+conf_file="/etc/ezbackup/ezbackup.conf"
+
 usage(){
   echo 'ezbackup export <backup_name> <source_folder> (source_db)'
 }
@@ -11,7 +13,7 @@ get_excludes(){
   excludes=$1
   if [[ -z $excludes ]]
   then
-    excludes=$(getconf "${SRC}/ezbackup.conf" "default_excludes")
+    excludes=$(getconf "$conf_file" "default_excludes")
   fi
   excludes=$(echo "$excludes" | tr ',' '\n')
   excludes_options=()
@@ -26,7 +28,7 @@ ezexport(){
   name=$1
   source_dir=$2
   source_db=$3
-  root_folder=$(getconf "${SRC}/ezbackup.conf" "root_folder")
+  root_folder=$(getconf "$conf_file" "root_folder")
   mkdir -p $root_folder
 
   if [[ $name == '--help' ]]; then
@@ -86,7 +88,7 @@ ezexport(){
   echolor orange "{Creating backup} $name {from} $source_dir {to} $destination\n"
 
   # FILES
-  excludes=$(getconf "${SRC}/ezbackup.conf" "default_excludes")
+  excludes=$(getconf "$conf_file" "default_excludes")
   echolor orange "{Enter comma separated} folders/files patterns to exclude {(default to 'cache,vendor,node_modules')} :\n"
   read -p '' excludes
   excludes_options=$(get_excludes $excludes)
