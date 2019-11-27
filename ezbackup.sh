@@ -96,4 +96,7 @@ else
   if [[ $1 == 'update' ]]; then
     update
   fi
+  if [[ $1 == 'backup_folder' ]]; then
+    echo "$root_folder"
+  fi
 fi
