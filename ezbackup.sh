@@ -14,7 +14,7 @@ init(){
   then
     echo "" > /dev/null
   else
-    cat "${SRC}/ezbackup.conf" > $conf_file
+    cat "${SRC}/default.conf" > $conf_file
   fi
   root_folder=$(getconf "$conf_file" "root_folder")
   mkdir -p "$root_folder"
