@@ -42,8 +42,6 @@ fi
 ssh $ssh_creds -t 'bash -ci "ezbackup update"' > /dev/null
 ssh $ssh_creds -t 'bash -ci "ezbackup backup_folder"' > "$tmp_file" 2>/dev/null
 
-
-
 if [[ -z $backup ]]
 then
   echolor orange "Chose a backup from the list bellow :"
@@ -57,7 +55,6 @@ else
 fi
 source_folder="$root_folder/$backup"
 destination_folder=$(cat "$tmp_file" | sed 's/\r//g')
-destination_folder="$destination_folder/$backup"
 
 echo "Remote connection : $ssh_creds"
 echo "Destination folder : $destination_folder"
@@ -67,6 +64,7 @@ rm -f "$tmp_file"
 
 read -p "Is it ok ? (Leave blank, CTRL+C to exit)" ok
 
-## Work in progress
 
-# rsync --progress -e ssh -avz "$source_folder" "$ssh_creds:$destination_folder"
+
+## Work in progress
+rsync --info=progress2 --no-i-r -e ssh -avz "$source_folder" "$ssh_creds:$destination_folder"
