@@ -64,7 +64,5 @@ rm -f "$tmp_file"
 
 read -p "Is it ok ? (Leave blank, CTRL+C to exit)" ok
 
-
-
 ## Work in progress
 rsync --info=progress2 --no-i-r -e ssh -avz "$source_folder" "$ssh_creds:$destination_folder"
