@@ -70,7 +70,9 @@ update(){
   cd "$SRC"
   cd ..
   tmp="/tmp/ezbackup"
-  git clone "https://github.com/aznoqmous/ezbackup" "$tmp"
+  echo "Mise à jour de $SRC"
+  echo "$SRC"
+  git clone "https://github.com/aznoqmous/ezbackup" "$tmp" > /dev/null
   cp -r "$tmp" .
   rm -rf "$tmp"
   chmod +x "$SRC"
