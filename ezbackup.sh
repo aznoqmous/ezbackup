@@ -68,8 +68,13 @@ get_infos(){
 
 update(){
   cd "$SRC"
-  git fetch
-  git pull
+  cd ..
+  tmp="/tmp/ezbackup"
+  git clone "https://github.com/aznoqmous/ezbackup" "$tmp"
+  cp -r "$tmp" .
+  rm -rf "$tmp"
+  chmod +x "$SRC"
+  echo "ezbackup a bien été mis à jour."
 }
 
 init
