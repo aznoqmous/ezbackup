@@ -3,6 +3,7 @@ SRC=${0%/*}
 
 source "${SRC}/ezexport.sh"
 source "${SRC}/ezimport.sh"
+source "${SRC}/ezremote.sh"
 source "${SRC}/echolor.sh"
 source "${SRC}/getconf.sh"
 
@@ -26,6 +27,8 @@ usage () {
   echolor orange "{export}     Create a new backup\n"
   echolor green "{ezbackup} "
   echolor orange "{import}     Import a previously created backup\n"
+  echolor green "{ezbackup} "
+  echolor orange "{remote}     Send selected backup to remote server\n"
   echolor green "{ezbackup} "
   echolor orange "{list}       List available exports\n"
   echolor green "{ezbackup} "
@@ -93,6 +96,9 @@ else
   fi
   if [[ $1 == 'import' ]]; then
     ezimport $2 $3 $4
+  fi
+  if [[ $1 == 'remote' ]]; then
+    ezremote $2 $3
   fi
   if [[ $1 == 'delete' ]]; then
     delete $2
