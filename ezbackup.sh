@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 SRC=${0%/*}
 
 source "${SRC}/ezexport.sh"
