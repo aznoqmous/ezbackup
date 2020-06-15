@@ -1,5 +1,5 @@
 #!/bin/bash
-SRC=${0%/*}
+SRC="${0%/*}"
 
 source "${SRC}/ezexport.sh"
 source "${SRC}/ezimport.sh"
