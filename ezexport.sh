@@ -127,7 +127,10 @@ ezexport(){
   echo "Backup done."
 
   infos="$destination/infos.log"
-  echo "name: $name" > "$infos"
+  datetime=$(date)
+  echo $datetime
+  echo "date: $datetime" > "$infos"
+  echo "name: $name" >> "$infos"
   echo "source_dir: $source_dir" >> "$infos"
   echo "source_db: $source_db" >> "$infos"
   echo "excludes: $excludes" >> "$infos"

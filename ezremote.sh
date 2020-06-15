@@ -20,23 +20,6 @@ test_ssh(){
   echo $res
 }
 
-list_backups(){
-  backups=$(ls -1 "$root_folder")
-  echo ""
-  for backup in $backups; do
-    savefile="$root_folder/$backup/save.tar.gz"
-    dbfile="$root_folder/$backup/database.sql.gz"
-    echolor green "[$backup]\n"
-    if [[ -f $savefile ]]; then
-      echolor orange "{(FILES} $(du -ha $savefile | cut -f1){)}  "
-    fi
-    if [[ -f $dbfile ]]; then
-      echolor orange "{(DATABASE} $(du -ha $dbfile | cut -f1){)} "
-    fi
-    echo ""
-    echo ""
-  done
-}
 ezremote(){
   ssh_creds="$1"
   backup="$2"

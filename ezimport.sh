@@ -16,7 +16,17 @@ list_backups(){
   for backup in $backups; do
     savefile="$root_folder/$backup/save.tar.gz"
     dbfile="$root_folder/$backup/database.sql.gz"
-    echolor green "[$backup]\n"
+    logfile="$root_folder/$backup/infos.log"
+
+    datecreated=""
+    if [[ -f "$logfile" ]]
+    then
+        datecreated=$(cat "$logfile"| grep "date:" | sed "s/date: //g")
+    fi
+
+    echolor green "[$backup] "
+    printf "$datecreated\n"
+
     if [[ -f $savefile ]]; then
       echolor orange "{(FILES} $(du -ha $savefile | cut -f1){)}  "
     fi
