@@ -128,7 +128,6 @@ ezexport(){
 
   infos="$destination/infos.log"
   datetime=$(date)
-  echo $datetime
   echo "date: $datetime" > "$infos"
   echo "name: $name" >> "$infos"
   echo "source_dir: $source_dir" >> "$infos"
