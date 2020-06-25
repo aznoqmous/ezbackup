@@ -128,12 +128,15 @@ ezexport(){
 
   infos="$destination/infos.log"
   datetime=$(date)
+  excludes=$(echo $excludes_options | sed "s/--exclude=//g")
+  origin=$(curl -s "ifconfig.me")
   echo "date: $datetime" > "$infos"
   echo "name: $name" >> "$infos"
   echo "source_dir: $source_dir" >> "$infos"
   echo "source_db: $source_db" >> "$infos"
   echo "excludes: $excludes" >> "$infos"
   echo "source_size: $source_size" >> "$infos"
+  echo "origin: $origin" >> "$infos"
 
   echolor green "{The} $name {backup is located at} $destination\n"
   echolor green "To import this backup:\n"
