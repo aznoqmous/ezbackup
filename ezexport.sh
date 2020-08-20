@@ -39,21 +39,21 @@ ezexport(){
     read -p "Enter a name for your export : " name
   fi
 
-
   backup_name=''
+  override_existing_backup=0
   while [[ -z $backup_name ]]
   do
     destination="$root_folder/$name"
     if [[ -d $destination ]]
     then
       echolor orange "{Backup} $name {already exists.}\n"
-      echolor orange "{Choose a new} name {for your export or leave blank to override:}\n"
+      echolor orange "{Choose a new} name {for your export or leave blank to override:} "
       read -p "" new_name
       if [[ -z $new_name ]]
       then
-        rm -rf $destination
+        override_existing_backup=1
         backup_name=$name
-        echolor orange "$name {backup will be overwritten.}"
+        echolor orange "$name {backup will be overwritten.}\n"
       else
         name=$new_name
       fi
@@ -65,7 +65,8 @@ ezexport(){
 
   if [[ -z $source_dir ]]
   then
-    read -p "Source folder path : " source_dir
+    echolor orange "Source folder path : "
+    read -p "" source_dir
   fi
 
   if [[ -d $source_dir ]];
@@ -80,18 +81,24 @@ ezexport(){
   available_disk_space=$(df -h --output="avail" $root_folder | tail -n1)
   source_size=$(du -hs "$source_dir" | cut -f1)
   printf "              \r"
-  echo "Available disk space : $available_disk_space"
-  echo "Backup size before compression : $source_size"
-  read -p "Confirm ?"
+  echolor orange "{Available disk space :} $available_disk_space \n"
+  echolor orange "{Backup size before compression :} $source_size \n"
 
-  mkdir -p $destination
-  echolor orange "{Creating backup} $name {from} $source_dir {to} $destination\n"
-
-  # FILES
   excludes=$(getconf "$conf_file" "default_excludes")
   echolor orange "{Enter comma separated} folders/files patterns to exclude {(default to 'cache,vendor,node_modules')} :\n"
   read -p '' excludes
   excludes_options=$(get_excludes $excludes)
+
+  read -p "Confirm ?"
+
+  if [[ $override_existing_backup == 1 ]]
+  then
+      rm -rf "$destination"
+  fi
+  mkdir -p "$destination"
+  echolor orange "\n{Creating backup} $name {from} $source_dir {to} $destination\n"
+
+  # FILES
   echolor orange "Calculating...\r"
   source_size=$(du -bc $excludes_options $source_dir | tail -n1 | sed 's/total//g' | sed 's/ //g')
   printf "              \r"
@@ -117,14 +124,14 @@ ezexport(){
   fi
   if [[ -z $source_db ]]
   then
-    echo "No database to export."
+    echolor orange "No database to export.\n"
   else
     echolor green "{Exporting database} $source_db {to} $destination/database.sql.gz\n"
     mysqldump $source_db -u root -p | gzip > "$destination/database.sql.gz"
     echo "Database export done."
   fi
 
-  echo "Backup done."
+  printf "Backup done.\n\n"
 
   infos="$destination/infos.log"
   datetime=$(date)
